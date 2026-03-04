@@ -28,14 +28,14 @@ jobs:
           for platform in $platforms; do
             OS="${platform%/*}"
             ARCH="${platform#*/}"
-            OUTPUT="dist/guz-deploy-${OS}-${ARCH}"
+            OUTPUT="dist/g-deploy-${OS}-${ARCH}"
             echo "Building ${OUTPUT}..."
             GOOS=$OS GOARCH=$ARCH go build -ldflags="$LDFLAGS" -o "$OUTPUT" .
           done
 
           # Windows
-          echo "Building dist/guz-deploy-windows-amd64.exe..."
-          GOOS=windows GOARCH=amd64 go build -ldflags="$LDFLAGS" -o dist/guz-deploy-windows-amd64.exe .
+          echo "Building dist/g-deploy-windows-amd64.exe..."
+          GOOS=windows GOARCH=amd64 go build -ldflags="$LDFLAGS" -o dist/g-deploy-windows-amd64.exe .
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2

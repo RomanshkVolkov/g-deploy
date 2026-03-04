@@ -12,7 +12,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/RomanshkVolkov/guz-deploy/internal/detector"
+	"github.com/RomanshkVolkov/g-deploy/internal/detector"
 )
 
 type config struct {
@@ -73,7 +73,7 @@ func Run(args []string) error {
 	templatePath := fmt.Sprintf(".deploy/deployment.%s.template.yml", cfg.proxy)
 	templateBytes, err := os.ReadFile(templatePath)
 	if err != nil {
-		return fmt.Errorf("template not found: %s\nRun 'guz-deploy init' first to scaffold the project", templatePath)
+		return fmt.Errorf("template not found: %s\nRun 'g-deploy init' first to scaffold the project", templatePath)
 	}
 
 	content := buildContent(string(templateBytes), cfg, serviceEnvs)

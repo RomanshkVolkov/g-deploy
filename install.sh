@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 
-REPO="RomanshkVolkov/guz-deploy"
-BINARY="guz-deploy"
+REPO="RomanshkVolkov/g-deploy"
+BINARY="g-deploy"
 
 # ── Colours ──────────────────────────────────────────────────────────────────
 green="\033[1;32m" yellow="\033[1;33m" red="\033[1;31m" reset="\033[0m"

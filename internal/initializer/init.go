@@ -7,8 +7,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/RomanshkVolkov/guz-deploy/internal/assets"
-	"github.com/RomanshkVolkov/guz-deploy/internal/detector"
+	"github.com/RomanshkVolkov/g-deploy/internal/assets"
+	"github.com/RomanshkVolkov/g-deploy/internal/detector"
 )
 
 // Run detects the framework in the current working directory and copies

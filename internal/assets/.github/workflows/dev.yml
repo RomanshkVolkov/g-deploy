@@ -45,8 +45,8 @@ jobs:
           IMAGE_REPO="${{ env.REGISTRY }}/$(echo "${{ env.IMAGE }}" | tr '[:upper:]' '[:lower:]'):${SHORT_SHA}"
           docker push "${IMAGE_REPO}"
 
-      - name: Install guz-deploy
-        run: go install github.com/RomanshkVolkov/guz-deploy@latest
+      - name: Install g-deploy
+        run: go install github.com/RomanshkVolkov/g-deploy@latest
 
       - name: Build deployment file
         env:
@@ -56,7 +56,7 @@ jobs:
         run: |
           SHORT_SHA=$(git rev-parse --short=7 HEAD)
           IMAGE_REPO="${{ env.REGISTRY }}/$(echo "${{ env.IMAGE }}" | tr '[:upper:]' '[:lower:]'):${SHORT_SHA}"
-          guz-deploy build \
+          g-deploy build \
             -s "${{ github.event.repository.name }}" \
             -e "${{ env.ENVIRONMENT }}" \
             -i "${IMAGE_REPO}" \

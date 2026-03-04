@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/RomanshkVolkov/guz-deploy/internal/builder"
-	"github.com/RomanshkVolkov/guz-deploy/internal/initializer"
+	"github.com/RomanshkVolkov/g-deploy/internal/builder"
+	"github.com/RomanshkVolkov/g-deploy/internal/initializer"
 )
 
 // version is set at build time via -ldflags "-X main.version=vX.Y.Z"
@@ -24,7 +24,7 @@ func main() {
 	case "build":
 		err = builder.Run(os.Args[2:])
 	case "version", "--version", "-v":
-		fmt.Println("guz-deploy v" + version)
+		fmt.Println("g-deploy v" + version)
 		return
 	default:
 		printUsage()
@@ -38,14 +38,14 @@ func main() {
 }
 
 func printUsage() {
-	fmt.Fprintln(os.Stderr, "guz-deploy - Docker Swarm deployment scaffold tool")
+	fmt.Fprintln(os.Stderr, "g-deploy - Docker Swarm deployment scaffold tool")
 	fmt.Fprintln(os.Stderr, "")
-	fmt.Fprintln(os.Stderr, "Usage: guz-deploy <command> [options]")
+	fmt.Fprintln(os.Stderr, "Usage: g-deploy <command> [options]")
 	fmt.Fprintln(os.Stderr, "")
 	fmt.Fprintln(os.Stderr, "Commands:")
 	fmt.Fprintln(os.Stderr, "  init    Detect framework and copy deployment files to current project")
 	fmt.Fprintln(os.Stderr, "  build   Generate Docker Stack deployment YAML from template")
 	fmt.Fprintln(os.Stderr, "  version Print version")
 	fmt.Fprintln(os.Stderr, "")
-	fmt.Fprintln(os.Stderr, "Run 'guz-deploy <command> -help' for command usage.")
+	fmt.Fprintln(os.Stderr, "Run 'g-deploy <command> -help' for command usage.")
 }
