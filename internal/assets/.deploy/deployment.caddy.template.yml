@@ -2,6 +2,8 @@ services:
   STACK_PLACEHOLDER-app:
     image: IMAGE_PLACEHOLDER
     environment:
+      - PORT=PORT_PLACEHOLDER
+##ENVS:app##
     networks:
       - caddy
     deploy:
@@ -9,7 +11,7 @@ services:
       labels:
         caddy: HOST_PLACEHOLDER
         caddy.tls: TLS_PLACEHOLDER
-        caddy.reverse_proxy: "{{upstreams 3000}}" # important check same value on Dockerfile and PORT enviroment var
+        caddy.reverse_proxy: "{{upstreams PORT_PLACEHOLDER}}"
 
 networks:
   caddy:

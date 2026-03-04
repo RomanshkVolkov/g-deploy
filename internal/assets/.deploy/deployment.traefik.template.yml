@@ -1,0 +1,38 @@
+services:
+  STACK_PLACEHOLDER-app:
+    image: IMAGE_PLACEHOLDER
+    environment:
+      - PORT=PORT_PLACEHOLDER
+##ENVS:app##
+    networks:
+      - traefik_proxy
+    deploy:
+      replicas: 1
+      labels:
+        # Enable Traefik
+        - "traefik.enable=true"
+
+        # HTTP router — redirects to HTTPS
+        - "traefik.http.routers.STACK_PLACEHOLDER-app-http.rule=Host(`HOST_PLACEHOLDER`) || Host(`www.HOST_PLACEHOLDER`)"
+        - "traefik.http.routers.STACK_PLACEHOLDER-app-http.entrypoints=web"
+        - "traefik.http.routers.STACK_PLACEHOLDER-app-http.middlewares=redirect-to-https"
+
+        # HTTPS router
+        - "traefik.http.routers.STACK_PLACEHOLDER-app-https.rule=Host(`HOST_PLACEHOLDER`) || Host(`www.HOST_PLACEHOLDER`)"
+        - "traefik.http.routers.STACK_PLACEHOLDER-app-https.entrypoints=websecure"
+        - "traefik.http.routers.STACK_PLACEHOLDER-app-https.tls=true"
+        - "traefik.http.routers.STACK_PLACEHOLDER-app-https.tls.certresolver=myresolver"
+
+        # HTTPS redirect middleware
+        - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+        - "traefik.http.middlewares.redirect-to-https.redirectscheme.permanent=true"
+
+        # Service — port is injected from the detected framework
+        - "traefik.http.services.STACK_PLACEHOLDER-app.loadbalancer.server.port=PORT_PLACEHOLDER"
+
+        # Network for Traefik
+        - "traefik.swarm.network=traefik_proxy"
+
+networks:
+  traefik_proxy:
+    external: true

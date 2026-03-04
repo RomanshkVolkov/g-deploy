@@ -1,2 +1,2 @@
-**/node_modules*
-romanshkvolkov.prod.deployment.yml
+guz-deploy
+*.deployment.yml

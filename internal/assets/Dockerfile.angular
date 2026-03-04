@@ -1,0 +1,31 @@
+# Team: Romanshk Volkov - https://github.com/RomanshkVolkov
+# Team: Diegode - https://github.com/diegode-tsx
+# Team: Alexandergv2117 - https://github.com/Alexandergv2117
+#
+# SPA Dockerfile (Angular / React) — build with Bun, serve with `serve`
+
+FROM oven/bun:1 AS builder
+
+WORKDIR /app
+
+COPY package.json bun.lock* ./
+RUN bun install --frozen-lockfile
+
+COPY . .
+RUN bun run build
+
+FROM oven/bun:1-alpine
+
+WORKDIR /app
+
+RUN bun install -g serve
+
+# Adjust the source path to match your framework's output:
+#   Angular  → dist/<project-name>/browser
+#   React    → dist
+COPY --from=builder /app/dist ./dist
+
+EXPOSE 3000
+ENV PORT=3000
+
+CMD ["serve", "-s", "dist", "-l", "3000"]
