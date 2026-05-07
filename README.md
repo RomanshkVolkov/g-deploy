@@ -79,6 +79,16 @@ g-deploy build \
 
 El port se auto-detecta del framework. Se puede sobreescribir con `--port`.
 
+### Template custom
+
+Por defecto el template se carga desde `.deploy/deployment.<proxy>.template.yml`. Para usar un template propio (ej. uno personalizado con servicios extra), pasa `--template`:
+
+```sh
+g-deploy build ... --template .deploy/deployment.custom.yml
+```
+
+El template debe respetar los placeholders esperados: `STACK_PLACEHOLDER`, `IMAGE_PLACEHOLDER`, `HOST_PLACEHOLDER`, `PORT_PLACEHOLDER`, `TLS_PLACEHOLDER`, y los marcadores de envs `##ENVS:<servicio>##`.
+
 ### Variables de entorno para los servicios
 
 Para inyectar secrets en el deployment usa el formato `DEPLOY_<servicio>_<VARIABLE>`:

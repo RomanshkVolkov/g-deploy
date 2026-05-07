@@ -24,6 +24,7 @@ type config struct {
 	port        int
 	tls         string
 	output      string
+	template    string
 }
 
 // Run parses args and generates the deployment YAML file.
@@ -42,6 +43,7 @@ func Run(args []string) error {
 	fs.StringVar(&portStr, "port", "", "Container port — auto-detected from framework when omitted")
 	fs.StringVar(&cfg.tls, "t", "internal", "TLS value (Caddy only, e.g. email or 'internal')")
 	fs.StringVar(&cfg.output, "o", "", "Output file path (required)")
+	fs.StringVar(&cfg.template, "template", "", "Path to a custom deployment template (overrides .deploy/deployment.<proxy>.template.yml)")
 
 	if err := fs.Parse(args); err != nil {
 		return err
@@ -69,10 +71,16 @@ func Run(args []string) error {
 	// Collect DEPLOY_<SERVICE>_<VAR>=<value> environment variables
 	serviceEnvs := collectDeployEnvs()
 
-	// Load template from the project's .deploy/ directory (allows per-project customisation)
-	templatePath := fmt.Sprintf(".deploy/deployment.%s.template.yml", cfg.proxy)
+	// Resolve template path: explicit --template flag → default .deploy/deployment.<proxy>.template.yml
+	templatePath := cfg.template
+	if templatePath == "" {
+		templatePath = fmt.Sprintf(".deploy/deployment.%s.template.yml", cfg.proxy)
+	}
 	templateBytes, err := os.ReadFile(templatePath)
 	if err != nil {
+		if cfg.template != "" {
+			return fmt.Errorf("template not found: %s", templatePath)
+		}
 		return fmt.Errorf("template not found: %s\nRun 'g-deploy init' first to scaffold the project", templatePath)
 	}
 
@@ -82,7 +90,7 @@ func Run(args []string) error {
 		return fmt.Errorf("failed to write %s: %w", cfg.output, err)
 	}
 
-	logf("[*] Deployment file generated: %s (proxy: %s, port: %d)", cfg.output, cfg.proxy, cfg.port)
+	logf("[*] Deployment file generated: %s (proxy: %s, port: %d, template: %s)", cfg.output, cfg.proxy, cfg.port, templatePath)
 	return nil
 }
 
