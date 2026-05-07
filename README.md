@@ -89,6 +89,24 @@ g-deploy build ... --template .deploy/deployment.custom.yml
 
 El template debe respetar los placeholders esperados: `STACK_PLACEHOLDER`, `IMAGE_PLACEHOLDER`, `HOST_PLACEHOLDER`, `PORT_PLACEHOLDER`, `TLS_PLACEHOLDER`, y los marcadores de envs `##ENVS:<servicio>##`.
 
+### Substituciones custom (`--var`)
+
+Para reemplazar claves arbitrarias en el template (más allá de los placeholders built-in) usa `--var KEY=VALUE`. La flag es repetible:
+
+```sh
+g-deploy build ... \
+  --template .deploy/deployment.custom.yml \
+  --var REGION=us-east-1 \
+  --var TIER=prod
+```
+
+Si tu template contiene `REGION` y `TIER` literales, serán sustituidos por `us-east-1` y `prod` respectivamente.
+
+Notas:
+- Los placeholders built-in (`STACK_PLACEHOLDER`, `IMAGE_PLACEHOLDER`, `HOST_PLACEHOLDER`, `PORT_PLACEHOLDER`, `TLS_PLACEHOLDER`) tienen prioridad. Si pasas `--var` con uno de esos nombres se ignora con un warning.
+- El nombre de la clave es literal — elige una convención que no choque con palabras comunes del YAML (ej. usa `MI_REGION_PLACEHOLDER` en lugar de `region`).
+- Para inyectar variables de entorno por servicio, sigue usando `DEPLOY_<servicio>_<VAR>` (ver más abajo). `--var` es para sustitución de texto en el template.
+
 ### Variables de entorno para los servicios
 
 Para inyectar secrets en el deployment usa el formato `DEPLOY_<servicio>_<VARIABLE>`:
